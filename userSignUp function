@@ -1,0 +1,29 @@
+userSignUp = (emailId, password,confirmPassword) =>{
+   if(password !== confirmPassword){
+       return Alert.alert("password doesn't match\nCheck your password.")
+   }else{
+     firebase.auth().createUserWithEmailAndPassword(emailId, password)
+     .then(()=>{
+       db.collection('users').add({
+         first_name:this.state.firstName,
+         last_name:this.state.lastName,
+         contact:this.state.contact,
+         email_id:this.state.emailId,
+         address:this.state.address
+       })
+       return  Alert.alert(
+            'User Added Successfully',
+            '',
+            [
+              {text: 'OK', onPress: () => this.setState({"isModalVisible" : false})},
+            ]
+        );
+     })
+     .catch((error)=> {
+       // Handle Errors here.
+       var errorCode = error.code;
+       var errorMessage = error.message;
+       return Alert.alert(errorMessage)
+     });
+   }
+ }
